@@ -42,6 +42,10 @@ public class ActionController {
 		ft.replace(R.id.container, fragment).commit();
 	}
 
+	public void sendMessage(String target, String message){
+		
+	}
+	
 	public LoginFragment getLoginFragment() {
 		return loginFragment;
 	}

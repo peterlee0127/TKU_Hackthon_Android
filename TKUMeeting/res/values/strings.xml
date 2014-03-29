@@ -13,11 +13,16 @@
     <string name="input_error">please enter ID or Password</string>
     <string name="submit">Submit</string>
     <string name="input_something">Are you feel boring?</string>
+    <string name="target">Teacher only</string>
     <string-array
         name="option_menu">
         <item>Curriculum</item>
         <item>Comment</item>
         <item>Logout</item>
     </string-array>
+        <string name="a">A</string>
+        <string name="b">B</string>
+        <string name="c">C</string>
+        <string name="d">D</string>
 
 </resources>

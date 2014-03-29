@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.TextView;
 
 public class ChatRoomFragment extends Fragment {
 	private String[] optionTitles;
@@ -20,7 +23,8 @@ public class ChatRoomFragment extends Fragment {
     private ListView drawerListView;
     private Button submitBtn;
     private EditText chatInput;
-    private LinearLayout charLl;
+    private LinearLayout chatLl;
+    private Switch target_sw;
     
     private ActionController action = ActionController.getSharedInstance();
 	@Override
@@ -32,8 +36,29 @@ public class ChatRoomFragment extends Fragment {
         drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout);
         drawerListView = (ListView) rootView.findViewById(R.id.left_drawer);
         submitBtn = (Button) rootView.findViewById(R.id.submit_btn);
-        charLl = (LinearLayout)rootView.findViewById(R.id.chat_ll);
+        chatLl = (LinearLayout)rootView.findViewById(R.id.chat_ll);
         chatInput = (EditText)rootView.findViewById(R.id.chat_input);
+        target_sw = (Switch)rootView.findViewById(R.id.target_switch);
+        
+        submitBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				String message = chatInput.getText().toString();
+				String target = "";
+				TextView tv = new TextView(action.getMainActivity());
+				if(target_sw.isChecked())
+					target = "tea";
+				else
+					target = "all";
+				action.sendMessage(target, message);
+				tv.setText(message);
+				chatLl.addView(tv);
+			}
+        	
+        });
+        
 		initDrawerLayout();
 		
 		
@@ -58,7 +83,7 @@ public class ChatRoomFragment extends Fragment {
         for(int i=0;i<optionTitles.length;i++)
         	drawerList.add(new DrawerItem(optionTitles[i],0));
         drawerListView.setAdapter(new CustomDrawerAdapter(action.getMainActivity(),
-                R.layout.drawer_item, drawerList));
+                R.layout.data_option_item, drawerList));
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 	}
 }
