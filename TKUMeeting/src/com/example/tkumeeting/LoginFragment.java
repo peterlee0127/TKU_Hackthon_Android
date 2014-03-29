@@ -9,6 +9,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -32,7 +34,15 @@ public class LoginFragment extends Fragment{
 		idInput = (EditText)rootView.findViewById(R.id.id_input);
 		pwInput = (EditText)rootView.findViewById(R.id.pw_input);
 		errorText = (TextView)rootView.findViewById(R.id.error_text);
-		
+		autoLogin.setEnabled(false);
+		remember.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean checked) {
+				autoLogin.setEnabled(checked);
+			}
+			
+		});
 		loginBtn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -56,5 +66,19 @@ public class LoginFragment extends Fragment{
 	}
 	public void sendMsg(String msg){
 		errorText.setText(msg);
+	}
+	public void setRemember(boolean checked) {
+		remember.setChecked(checked);
+		autoLogin.setEnabled(checked);
+	}
+	public void setID(String stu_id) {
+		idInput.setText(stu_id);
+		
+	}
+	public void setPw(String pw) {
+		pwInput.setText(pw);
+	}
+	public void setAutoLogin(boolean autoLogin) {
+		this.autoLogin.setChecked(autoLogin);
 	}
 }

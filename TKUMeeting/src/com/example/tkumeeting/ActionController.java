@@ -1,12 +1,17 @@
 package com.example.tkumeeting;
 
+
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 
 
 public class ActionController {
 	private HttpHelper httpHelper = HttpHelper.getSharedInstance();
+	private DBHelper dbHelper;
 	private static ActionController sharedInstance;
 	private LoginFragment loginFragment;
 	private VoteFragment voteFragment;
@@ -33,7 +38,6 @@ public class ActionController {
     private final int STUDENT_LOGOUT = 2;
 	
 	private ActionController(){
-		
 	}
 	
 	public static ActionController getSharedInstance(){
@@ -43,6 +47,9 @@ public class ActionController {
 	}
 	
 	public void login(String id, String pw, boolean rm, boolean al){
+		this.remember = rm;
+		this.autoLogin = al;
+		if(!remember)cleanUser();
 		if(id.equals(ADMIN_ID)&&pw.equals(ADMIN_PW)){
 			this.stu_id = ADMIN_ID;
 			this.pw = ADMIN_PW;
@@ -72,11 +79,75 @@ public class ActionController {
 	}
 	
 	private void saveStu(String stu_id, String pw, boolean al, int level){
-		
+
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.query(dbHelper.getTableName(), null,null,null, null, null, null);
+        String str = "";
+        if(al)
+        	str = "Yes";
+        else
+        	str = "No";
+        ContentValues values = new ContentValues();
+        values.put(dbHelper.getFieldName1(), stu_id);
+        values.put(dbHelper.getFieldName2(), pw);
+        values.put(dbHelper.getFieldName3(), str);
+        values.put(dbHelper.getFieldName4(), level + "");
+        
+        if(cursor.getCount()==0){
+            db.insert(dbHelper.getTableName(), null, values);
+        }else{
+            db.update(dbHelper.getTableName(), values, "_id=1", null);
+        }
+        cursor.close();
+        db.close();
 	}
 	
 	public void checkAutoLogin(){
-		
+		if(dbHelper == null)
+			dbHelper = new DBHelper(mainActivity);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(dbHelper.getTableName(), null,null,null, null, null, null);
+
+
+        if(cursor.getCount()>0){
+        	cursor.moveToFirst();	
+        	loginFragment.setRemember(true);
+        	if(cursor.getString(3).equals("Yes")){
+        		this.stu_id = cursor.getString(1);
+    			this.pw = cursor.getString(2);
+    			this.level = Integer.parseInt(cursor.getString(4));
+    			this.login = true;
+    			chatRoomFragment = new ChatRoomFragment();
+    			switchFragment(chatRoomFragment,0);
+        	}else if(cursor.getString(3).equals("")){
+        		loginFragment.setRemember(false);
+        	}else{
+        		loginFragment.setID(cursor.getString(1));
+        		loginFragment.setPw(cursor.getString(2));
+        	}	
+        }
+        cursor.close();
+        db.close();
+	}
+	
+	private void cleanUser(){
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(dbHelper.getTableName(), null,null,null, null, null, null);
+        if(cursor.getCount()>0){
+        	 ContentValues values = new ContentValues();
+             values.put(dbHelper.getFieldName1(), "");
+             values.put(dbHelper.getFieldName2(), "");
+             values.put(dbHelper.getFieldName3(), "");
+             values.put(dbHelper.getFieldName4(), "");
+             
+             if(cursor.getCount()==0){
+                 db.insert(dbHelper.getTableName(), null, values);
+             }else{
+                 db.update(dbHelper.getTableName(), values, "_id=1", null);
+             }
+             cursor.close();
+             db.close();
+        }
 	}
 	
 	private void switchFragment(Fragment fragment, int type){
@@ -94,7 +165,6 @@ public class ActionController {
 	}
 
 	public void endVote() {
-		// TODO Auto-generated method stub
 		switchFragment(chatRoomFragment,0);
 	}
 	
@@ -103,8 +173,14 @@ public class ActionController {
 	}
 
 	public void logout() {
-		// TODO Auto-generated method stub
-		
+		cleanUser();
+		loginFragment.setRemember(remember);
+		loginFragment.setAutoLogin(autoLogin);
+		if(remember){
+			loginFragment.setID("");
+			loginFragment.setPw("");
+		}
+		switchFragment(loginFragment,0);
 	}
 	
 	public void selectItem(int position) {
