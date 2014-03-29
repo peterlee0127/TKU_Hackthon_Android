@@ -35,6 +35,11 @@ public class ClassAdapter extends ArrayAdapter<Course> {
              viewHolder.placeTv=(TextView)convertView.findViewById(R.id.class_room_tv);
              viewHolder.teacherTv=(TextView)convertView.findViewById(R.id.teacher_tv);
              viewHolder.seatTv=(TextView)convertView.findViewById(R.id.seat_tv);
+             viewHolder.nameTv.setText(courses.get(position).getName());
+             viewHolder.timeTv.setText(courses.get(position).getTime());
+             viewHolder.placeTv.setText(courses.get(position).getPlace());
+             viewHolder.teacherTv.setText(courses.get(position).getTeacher());
+             viewHolder.seatTv.setText(courses.get(position).getSeat_no());
              convertView.setTag(viewHolder);
          }else{
              viewHolder=(ViewHolder)convertView.getTag();

@@ -11,16 +11,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 public class ClassListFragment extends Fragment {
 	private String[] optionTitles;
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
     private LinearLayout classListLayout;
-    private ScrollView classListSv;
     private ArrayList<Course> classList;
+    private ArrayList<String> courseArray;
+	private ArrayList<String> time_placeArray;
+	private ArrayList<String> seat_noArray;
+	private ArrayList<String> teach_nameArray;
+    
 
     
     private ActionController action = ActionController.getSharedInstance();
@@ -29,14 +31,26 @@ public class ClassListFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_class_list, container,
 				false);
-		optionTitles = getResources().getStringArray(R.array.option_menu_admin);
-        drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout_vote);
-        drawerListView = (ListView) rootView.findViewById(R.id.left_drawer_vote);
+		if(action.getLevel()==action.getLEVEL_ADMIN())
+			optionTitles = getResources().getStringArray(R.array.option_menu_admin);
+		else
+			optionTitles = getResources().getStringArray(R.array.option_menu);
+        drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout_class_list);
+        drawerListView = (ListView) rootView.findViewById(R.id.left_drawer_class_list);
 		initDrawerLayout();
 		
-		classListSv = (ScrollView)rootView.findViewById(R.id.class_list_sv);
 		classListLayout = (LinearLayout)rootView.findViewById(R.id.class_list_ll);
 
+		classList = new ArrayList<Course>();
+		for(int i=0;i<courseArray.size();i++){
+			classList.add(new Course(courseArray.get(i),time_placeArray.get(i),seat_noArray.get(i), teach_nameArray.get(i)));
+		}
+		ClassAdapter adapter = new ClassAdapter(action.getMainActivity(),R.layout.data_class_list,classList);
+		for(int i=0;i<courseArray.size();i++){
+			classListLayout.addView(adapter.getView(i, null, null));
+		}
+		
+		
 		return rootView;
 	}
 	
@@ -61,15 +75,12 @@ public class ClassListFragment extends Fragment {
 	public void setClassContent(ArrayList<String> courseArray,
 			ArrayList<String> time_placeArray, ArrayList<String> seat_noArray,
 			ArrayList<String> teach_nameArray) {
-		classList = new ArrayList<Course>();
-		for(int i=0;i<courseArray.size();i++){
-			classList.add(new Course(courseArray.get(i),time_placeArray.get(i),seat_noArray.get(i), teach_nameArray.get(i)));
-		}
-		ClassAdapter adapter = new ClassAdapter(action.getMainActivity(),R.layout.data_class_list,classList);
-		for(int i=0;i<courseArray.size();i++){
-			classListSv.addView(adapter.getView(i, null, null));
-		}
+		this.courseArray = courseArray;
+		this.time_placeArray = time_placeArray;
+		this.seat_noArray = seat_noArray;
+		this.teach_nameArray = teach_nameArray;
 		
+
 		
 	}
 	

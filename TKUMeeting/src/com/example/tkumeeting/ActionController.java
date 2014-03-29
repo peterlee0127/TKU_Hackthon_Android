@@ -21,6 +21,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 
 public class ActionController {
+	private WebSocket webSocket;
 	private DBHelper dbHelper;
 	private static ActionController sharedInstance;
 	private LoginFragment loginFragment;
@@ -60,6 +61,7 @@ public class ActionController {
 		this.remember = rm;
 		this.autoLogin = al;
 		if(!remember)cleanUser();
+		webSocket = WebSocket.getSharedInstance();
 		if(id.equals(ADMIN_ID)&&pw.equals(ADMIN_PW)){
 			this.stu_id = ADMIN_ID;
 			this.pw = ADMIN_PW;
@@ -67,7 +69,7 @@ public class ActionController {
 			this.login = true;
 			if(rm)
 				saveStu(stu_id, pw, al ,LEVEL_STUDENT);
-			chatRoomFragment = new ChatRoomFragment();
+			webSocket.connectToServer();
 			switchFragment(chatRoomFragment,0);
 		}else{
 			this.stu_id = id;
@@ -89,7 +91,7 @@ public class ActionController {
 				saveStu(stu_id, pw, autoLogin ,LEVEL_STUDENT);
 			this.level = LEVEL_STUDENT;
 			this.login = true;
-			chatRoomFragment = new ChatRoomFragment();
+			webSocket.connectToServer();
 			switchFragment(chatRoomFragment,0);
 		}else
 			getLoginFragment().sendMsg(result);
@@ -134,7 +136,8 @@ public class ActionController {
     			this.pw = cursor.getString(2);
     			this.level = Integer.parseInt(cursor.getString(4));
     			this.login = true;
-    			chatRoomFragment = new ChatRoomFragment();
+    			webSocket=WebSocket.getSharedInstance();
+    			webSocket.connectToServer();
     			switchFragment(chatRoomFragment,0);
         	}else if(cursor.getString(3).equals("")){
         		loginFragment.setRemember(false);
@@ -173,7 +176,7 @@ public class ActionController {
 	}
 
 	public void sendMessage(String target, String message){
-		
+		webSocket.sendMessage(message, target, stu_id);
 	}
 	
 	public void startVote() {

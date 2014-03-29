@@ -86,5 +86,10 @@ public class ChatRoomFragment extends Fragment {
                 R.layout.data_option_item, drawerList));
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 	}
-
+	public void sendMsg(String stu_id , String msg){
+		TextView tv = new TextView(action.getMainActivity());
+		tv.setText(msg);
+		tv.setLeft(0);
+		chatLl.addView(tv);
+	}
 }

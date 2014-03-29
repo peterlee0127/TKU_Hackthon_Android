@@ -11,8 +11,8 @@ public class Course {
 	public Course(String name,String time_place,String seat_no ,String teacher){
 		this.name = name;
 		String[] str = time_place.split("/");
-		this.week = str[0];
-		this.time = str[1];
+		this.week = str[0]+"/"+str[1];
+		this.time = str[0]+"/"+str[1];
 		this.place = str[2];
 		this.seat_no = seat_no;
 		this.teacher = teacher;
