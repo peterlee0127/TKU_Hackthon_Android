@@ -10,6 +10,7 @@ package com.example.tkumeeting;
 public final class R {
     public static final class array {
         public static final int option_menu=0x7f060000;
+        public static final int option_menu_admin=0x7f060001;
     }
     public static final class attr {
     }
@@ -33,24 +34,26 @@ public final class R {
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f0a0001;
-        public static final int a_btn=0x7f0a0018;
-        public static final int action_settings=0x7f0a001d;
+        public static final int a_btn=0x7f0a001a;
+        public static final int action_settings=0x7f0a001f;
         public static final int auto_login_check=0x7f0a0014;
         public static final int b_btn=0x7f0a001b;
-        public static final int c_btn=0x7f0a001a;
+        public static final int c_btn=0x7f0a001c;
         public static final int chat_input=0x7f0a000f;
         public static final int chat_ll=0x7f0a000e;
         public static final int class_name_tv=0x7f0a0002;
         public static final int class_room_tv=0x7f0a0006;
         public static final int container=0x7f0a0000;
         public static final int content_frame=0x7f0a000b;
-        public static final int d_btn=0x7f0a001c;
+        public static final int d_btn=0x7f0a001d;
         public static final int drawer_layout=0x7f0a000a;
+        public static final int drawer_layout_vote=0x7f0a0018;
         public static final int error_text=0x7f0a0017;
         public static final int id_input=0x7f0a0012;
         public static final int item_ll=0x7f0a0008;
         public static final int item_name=0x7f0a0009;
         public static final int left_drawer=0x7f0a0011;
+        public static final int left_drawer_vote=0x7f0a001e;
         public static final int login_btn=0x7f0a0016;
         public static final int option_menu_layout=0x7f0a0007;
         public static final int problem_no_tv=0x7f0a0019;

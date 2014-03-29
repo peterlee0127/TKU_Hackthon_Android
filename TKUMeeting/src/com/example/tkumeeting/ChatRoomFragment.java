@@ -32,7 +32,11 @@ public class ChatRoomFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_chat_room, container,
 				false);
-		optionTitles = getResources().getStringArray(R.array.option_menu);
+		if(action.getLevel()==action.getLEVEL_ADMIN())
+			optionTitles = getResources().getStringArray(R.array.option_menu_admin);
+		else
+			optionTitles = getResources().getStringArray(R.array.option_menu);
+		
         drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout);
         drawerListView = (ListView) rootView.findViewById(R.id.left_drawer);
         submitBtn = (Button) rootView.findViewById(R.id.submit_btn);
@@ -68,14 +72,10 @@ public class ChatRoomFragment extends Fragment {
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 	    @Override
 	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	        selectItem(position);
+		    drawerListView.setItemChecked(position, true);
+	        drawerLayout.closeDrawer(drawerListView);
+	        action.selectItem(position);
 	    }
-	}
-
-	private void selectItem(int position) {
-	    
-	    drawerListView.setItemChecked(position, true);
-	    drawerLayout.closeDrawer(drawerListView);
 	}
 
 	private void initDrawerLayout(){
@@ -86,4 +86,5 @@ public class ChatRoomFragment extends Fragment {
                 R.layout.data_option_item, drawerList));
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 	}
+
 }

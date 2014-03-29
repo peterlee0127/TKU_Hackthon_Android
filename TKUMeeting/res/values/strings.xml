@@ -20,6 +20,14 @@
         <item>Comment</item>
         <item>Logout</item>
     </string-array>
+    <string-array
+        name="option_menu_admin">
+        <item>Curriculum</item>
+        <item>Comment</item>
+        <item>Start vote</item>
+        <item>End vote</item>
+        <item>Logout</item>
+    </string-array>
         <string name="a">A</string>
         <string name="b">B</string>
         <string name="c">C</string>

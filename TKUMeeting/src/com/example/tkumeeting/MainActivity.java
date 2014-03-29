@@ -18,7 +18,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		LoginFragment lf = new LoginFragment();
 		action.setLoginFragment(lf);
-		action.setChatRoomFragment(new ChatRoomFragment());
 		action.setVoteFragment(new VoteFragment());
 		action.setClassListFragment(new ClassListFragment());
 		action.setMainActivity(this);
