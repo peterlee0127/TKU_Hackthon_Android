@@ -1,6 +1,17 @@
 package com.example.tkumeeting;
 
 
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
@@ -10,7 +21,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 
 public class ActionController {
-	private HttpHelper httpHelper = HttpHelper.getSharedInstance();
 	private DBHelper dbHelper;
 	private static ActionController sharedInstance;
 	private LoginFragment loginFragment;
@@ -62,8 +72,15 @@ public class ActionController {
 		}else{
 			this.stu_id = id;
 			this.pw = pw;
-			httpHelper.checkLogin(id, pw);
+			checkLogin(id, pw);
 		}
+	}
+	
+	public void checkLogin(String stu_id, String password){
+		LoginTask task = new LoginTask();
+		task.setStu_id(stu_id);
+		task.setPassword(password);
+		task.execute();
 	}
 	
 	public void onLoginResult(String result){
@@ -171,6 +188,49 @@ public class ActionController {
 	public void vote(String option){
 		switchFragment(chatRoomFragment,0);
 	}
+	
+	public void classList(){
+		GetClassListTask task = new GetClassListTask();
+		task.setStu_id(stu_id);
+		task.setPassword(pw);
+		task.execute();
+			
+		//switchFragment(getClassListFragment(),0);
+	}
+	
+	public void onGetClassListResult(String result){
+		ArrayList<String> courseArray = new ArrayList<String>();
+		ArrayList<String> time_placeArray = new ArrayList<String>();
+		ArrayList<String> seat_noArray = new ArrayList<String>();
+		ArrayList<String> teach_nameArray = new ArrayList<String>();
+		NodeList courses ;
+		NodeList time_plases;
+		NodeList seat_no;
+		NodeList teach_name;
+		try{
+
+			DocumentBuilder  documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder(); 
+			InputStream is = new ByteArrayInputStream(result.getBytes("UTF-8"));
+	
+			Document  document = documentBuilder.parse(is);
+			document.getDocumentElement().normalize(); 
+			courses  = document.getElementsByTagName("ch_cos_name");
+			time_plases  = document.getElementsByTagName("time_plase");
+			seat_no  = document.getElementsByTagName("seat_no");
+			teach_name  = document.getElementsByTagName("teach_name");
+			int courseCount=courses.getLength();
+			for (int i = 0; i < courseCount ; i++) {
+				  courseArray.add(courses.item(i).getTextContent());
+				  time_placeArray.add(time_plases.item(i).getTextContent());
+				  seat_noArray.add(seat_no.item(i).getTextContent());
+				  teach_nameArray.add(teach_name.item(i).getTextContent());
+			}
+		 }catch (Exception e) {
+			 e.toString();
+		 }
+		classListFragment.setClassContent(courseArray, time_placeArray, seat_noArray, teach_nameArray);
+		switchFragment(classListFragment,0);
+	}
 
 	public void logout() {
 		cleanUser();
@@ -189,7 +249,7 @@ public class ActionController {
 	    	position+=90;
 		    switch(position){
 		    	case ADMIN_CLASS_LIST:
-		    		switchFragment(getClassListFragment(),0);
+		    		//classList();
 		    		break;
 		    	case ADMIN_CHAT:
 		    		switchFragment(getChatRoomFragment(),0);
@@ -204,7 +264,7 @@ public class ActionController {
 		    		logout();
 		    		break;
 		    	case STUDENT_CLASS_LIST:
-		    		switchFragment(getClassListFragment(),0);
+		    		classList();
 		    		break;
 		    	case STUDENT_CHAT:
 		    		switchFragment(getChatRoomFragment(),0);
