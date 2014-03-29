@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/left_chat_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="visible" >
+
+    <ImageView
+        android:id="@+id/imageView_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/nullString"
+        android:padding="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/demo_avatar_jobs" />
+
+       <TextView
+           android:id="@+id/user_left"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/imageView_left"
+           android:layout_toLeftOf="@+id/chat_content_left"
+           android:text="@string/submit"
+           android:textAppearance="?android:attr/textAppearanceSmall" />
+
+       <View
+           android:id="@+id/view_left"
+           android:layout_width="match_parent"
+           android:layout_height="1dp"
+           android:layout_alignParentLeft="true"
+           android:layout_below="@+id/user_left"
+           android:background="#DADADC"
+           android:visibility="invisible" />
+
+       <TextView
+           android:id="@+id/chat_content_left"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_above="@+id/user_left"
+           android:layout_toRightOf="@+id/imageView_left"
+           android:text="@string/input_something"
+           android:textSize="20sp" />
+
+</RelativeLayout>

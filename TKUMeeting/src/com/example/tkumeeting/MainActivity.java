@@ -102,15 +102,15 @@ public class MainActivity extends Activity implements IBeaconConsumer{
         @Override 
         public void didRangeBeaconsInRegion(Collection<IBeacon> iBeacons, Region region) {
             if (iBeacons.size() > 0) {
-            	int a = 1/0;
-         	
+            	if(action.isLogin() && !WebSocket.getSharedInstance().isAdded())
+            	WebSocket.getSharedInstance().addMe("400410238");
             }
         }
 
         });
 
         try {
-            iBeaconManager.startRangingBeaconsInRegion(new Region("‹³Žº", "1618E6B0-7912-4A22-8464-7042987A7F58", 0, 0));
+            iBeaconManager.startRangingBeaconsInRegion(new Region("E405", "1618E6B0-7912-4A22-8464-7042987A7F58", 0, 0));
             iBeaconManager.startRangingBeaconsInRegion(new Region("G315", "92FEC112-0AFB-43B0-8B80-14192A537E86", 0, 2));
         } catch (RemoteException e) {   }
     }

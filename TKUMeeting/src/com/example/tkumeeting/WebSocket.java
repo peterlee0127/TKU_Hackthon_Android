@@ -26,12 +26,12 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
 	private final String TEG= "socket error"; 
 	private final int RECONNECT_TIMES_LIMIT = 10;
 	private int reconnectTimes = 0;
-	private boolean login = false;
 	private boolean added =false;
 	private String stu_id;
 	private int loginLevel = -1;
 	private final int COME = 0;
 	private final int BACK = 1;
+	private String classID = "";
 	
 	private final String START_VOTE = "start_vote";
 	private final String END_VOTE = "end_vote";
@@ -78,6 +78,9 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
             client.addListener(ADDME_RES, sharedInstance); 
             client.addListener(LISTEN_CHAT, sharedInstance);
             client.addListener(VOTE_RES, sharedInstance);
+            GetClassIDTask task = new GetClassIDTask();
+            task.setUrl(host+":"+port+"/api/list");
+            task.execute();
             sharedInstance.client = client;
             reconnectTimes = 0;
 
@@ -118,11 +121,12 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
     }
     
     public void addMe(String stu_id){
-    	if( client!=null && client.isConnected() && !added){
+    	if( client!=null && client.isConnected() && !added && !classID.equals("")){
 	        JSONObject jsonObj = new JSONObject();
 	        JSONArray json = new JSONArray();
 	        try {
 				jsonObj.put("stu_id", stu_id);
+				jsonObj.put("class_id", classID);
 				json.put(jsonObj);
 			} catch (JSONException e) {
 				Log.e(TEG,e.toString());
@@ -219,11 +223,14 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
 				}, 2000);
 	}
 	
-	public void setLogin(boolean login){
-		this.login = login;
+	public void setAdded(boolean added){
+		this.added = added;
 	}
-	public boolean isLogin(){
-		return login;
+	public boolean isAdded(){
+		return added;
+	}
+	public String getClassID(){
+		return classID;
 	}
 	public void setStu_id(String stu_id){
 		this.stu_id = stu_id;
@@ -238,6 +245,17 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
 		this.loginLevel = loginLevel;
 	}
 
+	public void onGetClassIDResult(String result)  {
+		// TODO Auto-generated method stub
+		try {
+			JSONArray obj = new JSONArray(result);
+			classID = obj.getJSONObject(0).get("_id").toString();
+			action.switchFragment(action.getChatRoomFragment(), 0);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 
 

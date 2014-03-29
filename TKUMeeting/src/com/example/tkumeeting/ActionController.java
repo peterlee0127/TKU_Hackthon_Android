@@ -39,6 +39,7 @@ public class ActionController {
 	private boolean autoLogin = false;
 	private boolean login = false;
 	private int level = 0;
+    private ArrayList<ChatContent> chatContent = new ArrayList<ChatContent>();;
     private final int ADMIN_CLASS_LIST = 90;
     private final int ADMIN_CHAT = 91;
     private final int ADMIN_START_VOTE = 92;
@@ -70,7 +71,8 @@ public class ActionController {
 			if(rm)
 				saveStu(stu_id, pw, al ,LEVEL_STUDENT);
 			webSocket.connectToServer();
-			switchFragment(chatRoomFragment,0);
+			if(!webSocket.getClassID().equals(""))
+				switchFragment(chatRoomFragment,0);
 		}else{
 			this.stu_id = id;
 			this.pw = pw;
@@ -92,7 +94,9 @@ public class ActionController {
 			this.level = LEVEL_STUDENT;
 			this.login = true;
 			webSocket.connectToServer();
-			switchFragment(chatRoomFragment,0);
+			if(!webSocket.getClassID().equals("")){
+				switchFragment(chatRoomFragment,0);
+			}
 		}else
 			getLoginFragment().sendMsg(result);
 	}
@@ -138,7 +142,8 @@ public class ActionController {
     			this.login = true;
     			webSocket=WebSocket.getSharedInstance();
     			webSocket.connectToServer();
-    			switchFragment(chatRoomFragment,0);
+    			if(!webSocket.getClassID().equals(""))
+    				switchFragment(chatRoomFragment,0);
         	}else if(cursor.getString(3).equals("")){
         		loginFragment.setRemember(false);
         	}else{
@@ -170,7 +175,7 @@ public class ActionController {
         }
 	}
 	
-	private void switchFragment(Fragment fragment, int type){
+	public void switchFragment(Fragment fragment, int type){
 		FragmentTransaction ft = mainActivity.getFragmentManager().beginTransaction();
 		ft.replace(R.id.container, fragment).commit();
 	}
@@ -239,6 +244,7 @@ public class ActionController {
 		cleanUser();
 		loginFragment.setRemember(remember);
 		loginFragment.setAutoLogin(autoLogin);
+		webSocket.setAdded(false);
 		if(remember){
 			loginFragment.setID("");
 			loginFragment.setPw("");
@@ -277,6 +283,10 @@ public class ActionController {
 		    		break;
 		    	
 		    }
+	}
+	
+	public void addChatContent(String message){
+		this.chatContent.add(new ChatContent(stu_id,message));
 	}
 	
 	public LoginFragment getLoginFragment() {
@@ -341,5 +351,21 @@ public class ActionController {
 
 	public void setLogin(boolean login) {
 		this.login = login;
+	}
+
+	public ArrayList<ChatContent> getChatContent() {
+		return chatContent;
+	}
+
+	public void setChatContent(ArrayList<ChatContent> chatContent) {
+		this.chatContent = chatContent;
+	}
+
+	public String getStu_id() {
+		return stu_id;
+	}
+
+	public void setStu_id(String stu_id) {
+		this.stu_id = stu_id;
 	}
 }

@@ -75,10 +75,10 @@ public class ClassListFragment extends Fragment {
 	public void setClassContent(ArrayList<String> courseArray,
 			ArrayList<String> time_placeArray, ArrayList<String> seat_noArray,
 			ArrayList<String> teach_nameArray) {
-		this.courseArray = courseArray;
-		this.time_placeArray = time_placeArray;
-		this.seat_noArray = seat_noArray;
-		this.teach_nameArray = teach_nameArray;
+			this.courseArray = courseArray;
+			this.time_placeArray = time_placeArray;
+			this.seat_noArray = seat_noArray;
+			this.teach_nameArray = teach_nameArray;
 		
 
 		

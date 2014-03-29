@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +26,8 @@ public class ChatRoomFragment extends Fragment {
     private EditText chatInput;
     private LinearLayout chatLl;
     private Switch target_sw;
+    private ChatAdapter adapterRight;
+    private ChatAdapter adapterLeft;
     
     private ActionController action = ActionController.getSharedInstance();
 	@Override
@@ -36,13 +39,20 @@ public class ChatRoomFragment extends Fragment {
 			optionTitles = getResources().getStringArray(R.array.option_menu_admin);
 		else
 			optionTitles = getResources().getStringArray(R.array.option_menu);
-		
+		adapterRight = new ChatAdapter(action.getMainActivity(),R.layout.chat_content_right,action.getChatContent());
+		adapterRight.setResource(R.id.user_right, R.id.chat_content_right, R.id.imageView_right, R.id.view_right);
+		adapterLeft = new ChatAdapter(action.getMainActivity(),R.layout.chat_content_left,action.getChatContent());
+		adapterLeft.setResource(R.id.user_left, R.id.chat_content_left, R.id.imageView_left, R.id.view_left);
         drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout);
         drawerListView = (ListView) rootView.findViewById(R.id.left_drawer);
         submitBtn = (Button) rootView.findViewById(R.id.submit_btn);
         chatLl = (LinearLayout)rootView.findViewById(R.id.chat_ll);
         chatInput = (EditText)rootView.findViewById(R.id.chat_input);
         target_sw = (Switch)rootView.findViewById(R.id.target_switch);
+        restoreChatContent();
+        
+
+		
         
         submitBtn.setOnClickListener(new OnClickListener(){
 
@@ -57,8 +67,8 @@ public class ChatRoomFragment extends Fragment {
 				else
 					target = "all";
 				action.sendMessage(target, message);
-				tv.setText(message);
-				chatLl.addView(tv);
+				action.addChatContent(message);
+				chatLl.addView(adapterRight.getView(action.getChatContent().size()-1, null, null));
 			}
         	
         });
@@ -87,9 +97,20 @@ public class ChatRoomFragment extends Fragment {
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 	}
 	public void sendMsg(String stu_id , String msg){
-		TextView tv = new TextView(action.getMainActivity());
-		tv.setText(msg);
-		tv.setLeft(0);
-		chatLl.addView(tv);
+		action.getChatContent().add(new ChatContent(stu_id,msg));
+		chatLl.addView(adapterLeft.getView(action.getChatContent().size()-1, null, null));
 	}
+	
+	public void restoreChatContent(){
+		ArrayList<ChatContent> chat = action.getChatContent();
+		for(int i=0;i<chat.size();i++){
+			if(chat.get(i).getStu_id().equals(action.getStu_id()))
+				chatLl.addView(adapterRight.getView(i, null, null));
+			else
+				chatLl.addView(adapterLeft.getView(i, null, null));
+		}
+	}
+	
+
+
 }
