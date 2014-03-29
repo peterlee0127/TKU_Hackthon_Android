@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 
 
 public class ActionController {
+	private HttpHelper httpHelper = HttpHelper.getSharedInstance();
 	private static ActionController sharedInstance;
 	private LoginFragment loginFragment;
 	private VoteFragment voteFragment;
@@ -18,6 +19,9 @@ public class ActionController {
 	private final int LEVEL_STUDENT = 0;
 	private String stu_id = "";
 	private String pw = "";
+	private boolean remember = false;
+	private boolean autoLogin = false;
+	private boolean login = false;
 	private int level = 0;
     private final int ADMIN_CLASS_LIST = 90;
     private final int ADMIN_CHAT = 91;
@@ -43,11 +47,32 @@ public class ActionController {
 			this.stu_id = ADMIN_ID;
 			this.pw = ADMIN_PW;
 			this.level = LEVEL_ADMIN;
+			this.login = true;
+			if(rm)
+				saveStu(stu_id, pw, al ,LEVEL_STUDENT);
 			chatRoomFragment = new ChatRoomFragment();
 			switchFragment(chatRoomFragment,0);
 		}else{
-			
+			this.stu_id = id;
+			this.pw = pw;
+			httpHelper.checkLogin(id, pw);
 		}
+	}
+	
+	public void onLoginResult(String result){
+		if(result.equals("õ{Âjñß·˘ê≥äm")){
+			if(remember)
+				saveStu(stu_id, pw, autoLogin ,LEVEL_STUDENT);
+			this.level = LEVEL_STUDENT;
+			this.login = true;
+			chatRoomFragment = new ChatRoomFragment();
+			switchFragment(chatRoomFragment,0);
+		}else
+			getLoginFragment().sendMsg(result);
+	}
+	
+	private void saveStu(String stu_id, String pw, boolean al, int level){
+		
 	}
 	
 	public void checkAutoLogin(){
@@ -169,5 +194,13 @@ public class ActionController {
 
 	public void setLevel(int level) {
 		this.level = level;
+	}
+
+	public boolean isLogin() {
+		return login;
+	}
+
+	public void setLogin(boolean login) {
+		this.login = login;
 	}
 }

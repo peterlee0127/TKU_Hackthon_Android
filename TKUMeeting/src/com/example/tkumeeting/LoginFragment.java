@@ -54,4 +54,7 @@ public class LoginFragment extends Fragment{
 		
 		return rootView;
 	}
+	public void sendMsg(String msg){
+		errorText.setText(msg);
+	}
 }
