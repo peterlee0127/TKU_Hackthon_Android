@@ -34,7 +34,7 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
 	private String classID = "";
 	
 	private final String START_VOTE = "start_vote";
-	private final String END_VOTE = "end_vote";
+	private final String VOTE_RESULT = "vote_result";
 	private final String ADDME_RES = "addme_res";
 	private final String LISTEN_CHAT = "listen_chat";
 	private final String VOTE_RES = "vote_res";
@@ -74,7 +74,7 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
             client.setJSONCallback(sharedInstance);
             client.setStringCallback(sharedInstance);
             client.addListener(START_VOTE, sharedInstance);  
-            client.addListener(END_VOTE, sharedInstance);  
+            client.addListener(VOTE_RESULT, sharedInstance);  
             client.addListener(ADDME_RES, sharedInstance); 
             client.addListener(LISTEN_CHAT, sharedInstance);
             client.addListener(VOTE_RES, sharedInstance);
@@ -110,13 +110,14 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
 	        JSONArray json = new JSONArray();
 	        try {
 				jsonObj.put("stu_id", stu_id);
-				jsonObj.put("select", select);
+				jsonObj.put("answer", select);
+				jsonObj.put("class_id", classID);
 				json.put(jsonObj);
 			} catch (JSONException e) {
 				Log.e(TEG,e.toString());
 				e.printStackTrace();
 			}
-	        client.emit("send_vote", json);
+	        client.emit("voting", json);
     	}		
     }
     
@@ -146,7 +147,8 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
 		    	case START_VOTE:
 		    		action.startVote();
 		    		break;
-		    	case END_VOTE:
+		    	case VOTE_RESULT:
+		    		
 		    		action.endVote();
 		    		break;
 		    	case ADDME_RES:

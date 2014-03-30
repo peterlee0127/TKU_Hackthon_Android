@@ -30,8 +30,14 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int demo_avatar_jobs=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int a_button=0x7f020000;
+        public static final int abcd_bg=0x7f020001;
+        public static final int abcd_button=0x7f020002;
+        public static final int b_button=0x7f020003;
+        public static final int c_button=0x7f020004;
+        public static final int d_button=0x7f020005;
+        public static final int demo_avatar_jobs=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
     }
     public static final class id {
         public static final int a_btn=0x7f0a0028;
@@ -40,7 +46,7 @@ public final class R {
         public static final int b_btn=0x7f0a0029;
         public static final int c_btn=0x7f0a002a;
         public static final int chat_content_left=0x7f0a0004;
-        public static final int chat_content_right=0x7f0a0009;
+        public static final int chat_content_right=0x7f0a000a;
         public static final int chat_input=0x7f0a0019;
         public static final int chat_ll=0x7f0a0018;
         public static final int class_list_layout=0x7f0a000b;
@@ -77,9 +83,9 @@ public final class R {
         public static final int teacher_tv=0x7f0a000f;
         public static final int time_tv=0x7f0a000e;
         public static final int user_left=0x7f0a0003;
-        public static final int user_right=0x7f0a0008;
+        public static final int user_right=0x7f0a0009;
         public static final int view_left=0x7f0a0005;
-        public static final int view_right=0x7f0a000a;
+        public static final int view_right=0x7f0a0008;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

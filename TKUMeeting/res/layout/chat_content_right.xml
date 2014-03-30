@@ -17,15 +17,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/demo_avatar_jobs" />
 
-       <TextView
-           android:id="@+id/user_right"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignParentRight="true"
-           android:layout_below="@+id/imageView_right"
-           android:text="@string/submit"
-           android:textAppearance="?android:attr/textAppearanceSmall" />
-
        <View
            android:id="@+id/view_right"
            android:layout_width="match_parent"
@@ -36,11 +27,23 @@
            android:visibility="invisible" />
 
        <TextView
+           android:id="@+id/user_right"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@+id/chat_content_right"
+           android:layout_alignParentRight="true"
+           android:layout_below="@+id/imageView_right"
+           android:gravity="right"
+           android:text="@string/submit"
+           android:textAppearance="?android:attr/textAppearanceSmall" />
+
+       <TextView
            android:id="@+id/chat_content_right"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_alignBottom="@+id/imageView_right"
-           android:layout_toLeftOf="@+id/user_right"
+           android:layout_toLeftOf="@+id/imageView_right"
+           android:gravity="right"
            android:text="@string/input_something"
            android:textSize="20sp" />
 

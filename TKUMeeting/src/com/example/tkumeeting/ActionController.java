@@ -194,6 +194,7 @@ public class ActionController {
 	}
 	
 	public void vote(String option){
+		webSocket.sendVote(stu_id, option);
 		switchFragment(chatRoomFragment,0);
 	}
 	

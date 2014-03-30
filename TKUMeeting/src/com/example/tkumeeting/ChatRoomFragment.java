@@ -61,11 +61,10 @@ public class ChatRoomFragment extends Fragment {
 				// TODO Auto-generated method stub
 				String message = chatInput.getText().toString();
 				String target = "";
-				TextView tv = new TextView(action.getMainActivity());
 				if(target_sw.isChecked())
-					target = "tea";
+					target = "Teacher";
 				else
-					target = "all";
+					target = "All";
 				action.sendMessage(target, message);
 				action.addChatContent(message);
 				chatLl.addView(adapterRight.getView(action.getChatContent().size()-1, null, null));
