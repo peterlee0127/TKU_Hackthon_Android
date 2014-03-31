@@ -1,0 +1,21 @@
+<resources>
+
+    <string name="a">A</string>
+    <string name="action_settings">設定</string>
+    <string name="app_name">TKU Meeting</string>
+    <string name="auto_login">自動登入</string>
+    <string name="b">B</string>
+    <string name="c">C</string>
+    <string name="d">D</string>
+    <string name="hello_world">世界好</string>
+    <string name="id">學號</string>
+    <string name="input_error">學號或密碼未輸入</string>
+    <string name="input_something">你在想什麼嗎？</string>
+    <string name="login">登入</string>
+    <string name="password">密碼</string>
+    <string name="pleaseLogin">使用者登入</string>
+    <string name="remember">記住我</string>
+    <string name="submit">傳送</string>
+    <string name="target">與老師悄悄話</string>
+
+</resources>

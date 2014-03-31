@@ -9,12 +9,12 @@
     <RelativeLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:paddingBottom="@dimen/activity_vertical_margin"
-	    android:paddingLeft="@dimen/activity_horizontal_margin"
-	    android:paddingRight="@dimen/activity_horizontal_margin"
-	    android:paddingTop="@dimen/activity_vertical_margin"
-        android:background="@color/write" >
+        android:layout_height="match_parent"
+        android:background="@drawable/unnamed"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
 
         <ScrollView
             android:id="@+id/scrollView1"
@@ -35,25 +35,14 @@
             </LinearLayout>
         </ScrollView>
 
-        <EditText
-            android:id="@+id/chat_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:hint="@string/input_something"
-            android:ems="10" >
-
-            <requestFocus />
-        </EditText>
-
         <Button
             android:id="@+id/submit_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:text="@string/submit" />
+            android:background="@drawable/beacon"
+             />
 
         <Switch
             android:id="@+id/target_switch"
@@ -62,6 +51,16 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="@string/target" />
+
+        <EditText
+            android:id="@+id/chat_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/submit_btn"
+            android:layout_alignLeft="@+id/scrollView1"
+            android:layout_toLeftOf="@+id/submit_btn"
+            android:ems="10"
+            android:hint="@string/input_something" />
 
     </RelativeLayout>
 

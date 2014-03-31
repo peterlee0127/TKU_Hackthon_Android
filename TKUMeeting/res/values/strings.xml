@@ -32,5 +32,6 @@
         <string name="b">B</string>
         <string name="c">C</string>
         <string name="d">D</string>
+        <string name="pleaseLogin">Login</string>
 
 </resources>

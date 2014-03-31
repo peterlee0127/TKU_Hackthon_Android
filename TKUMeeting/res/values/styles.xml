@@ -18,6 +18,9 @@
     </style>
     <color name="red">#FF0000</color>
     <color name="write">#FFFFFF</color>
+    <color name="rice">#D3C5AC</color>
+    <color name="chat">#FFFAF0</color>
+    <color name="tran">#00000000</color>
 
 
 </resources>

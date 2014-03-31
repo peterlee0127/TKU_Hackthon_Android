@@ -51,6 +51,7 @@ public class MainActivity extends Activity implements IBeaconConsumer{
     @Override 
     protected void onPause() {
     	super.onPause();
+        action.logout();
     	if (iBeaconManager.isBound(this)) iBeaconManager.setBackgroundMode(this, true);    		
     }
     @Override 
@@ -103,7 +104,7 @@ public class MainActivity extends Activity implements IBeaconConsumer{
         public void didRangeBeaconsInRegion(Collection<IBeacon> iBeacons, Region region) {
             if (iBeacons.size() > 0) {
             	if(action.isLogin() && !WebSocket.getSharedInstance().isAdded())
-            	WebSocket.getSharedInstance().addMe("400410238");
+            	WebSocket.getSharedInstance().addMe(action.getStu_id());
             }
         }
 

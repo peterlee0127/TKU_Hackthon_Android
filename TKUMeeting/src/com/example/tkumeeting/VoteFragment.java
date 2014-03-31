@@ -22,6 +22,8 @@ public class VoteFragment extends Fragment {
     private Button bBtn;
     private Button cBtn;
     private Button dBtn;
+    private Button vBtn;
+    private String option = "";
     private TextView problemNoTv;
     
     private ActionController action = ActionController.getSharedInstance();
@@ -41,29 +43,36 @@ public class VoteFragment extends Fragment {
 		bBtn = (Button)rootView.findViewById((R.id.b_btn));
 		cBtn = (Button)rootView.findViewById((R.id.c_btn));
 		dBtn = (Button)rootView.findViewById((R.id.d_btn));
-		
+		vBtn = (Button)rootView.findViewById(R.id.vote_button);
+		vBtn.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				if(!option.equals(""))
+					action.vote(option);
+			}
+		});
 		aBtn.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				action.vote("A");
+				option = "A";
 			}
 		});
 		bBtn.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				action.vote("B");
+				option = "B";
 			}
 		});
 		cBtn.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				action.vote("C");
+				option = "C";
 			}
 		});
 		dBtn.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				action.vote("D");
+				option = "D";
 			}
 		});
 	

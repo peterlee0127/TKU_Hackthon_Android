@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Handler;
 import android.util.Log;
 
@@ -121,6 +123,36 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
     	}		
     }
     
+    public void startVote(){
+    	if( client!=null && client.isConnected() ){
+	        JSONObject jsonObj = new JSONObject();
+	        JSONArray json = new JSONArray();
+	        try {
+				jsonObj.put("class_id", classID);
+				json.put(jsonObj);
+			} catch (JSONException e) {
+				Log.e(TEG,e.toString());
+				e.printStackTrace();
+			}
+	        client.emit("vote_req", json);
+    	}		
+    }
+    
+    public void endVote(){
+    	if( client!=null && client.isConnected() ){
+	        JSONObject jsonObj = new JSONObject();
+	        JSONArray json = new JSONArray();
+	        try {
+				jsonObj.put("class_id", classID);
+				json.put(jsonObj);
+			} catch (JSONException e) {
+				Log.e(TEG,e.toString());
+				e.printStackTrace();
+			}
+	        client.emit("end_vote", json);
+    	}		
+    }
+    
     public void addMe(String stu_id){
     	if( client!=null && client.isConnected() && !added && !classID.equals("")){
 	        JSONObject jsonObj = new JSONObject();
@@ -145,14 +177,15 @@ public class WebSocket implements DisconnectCallback, ErrorCallback, JSONCallbac
 			
 		    switch(event){
 		    	case START_VOTE:
-		    		action.startVote();
+		    		if(action.getLevel()!=action.getLEVEL_ADMIN())
+		    			action.startVote();
 		    		break;
 		    	case VOTE_RESULT:
-		    		
 		    		action.endVote();
 		    		break;
 		    	case ADDME_RES:
 		    		added = true;
+		    		action.changeSoundModeVibrate();
 		    		break;
 		    	case LISTEN_CHAT:
 				try {

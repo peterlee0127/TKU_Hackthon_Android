@@ -12,11 +12,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 
 
 
@@ -29,8 +32,8 @@ public class ActionController {
 	private ClassListFragment classListFragment;
 	private ChatRoomFragment chatRoomFragment;
 	private MainActivity mainActivity;
-	private final String ADMIN_ID = "";//"admin@admin";
-	private final String ADMIN_PW = "";//"admin";
+	private final String ADMIN_ID = "admin@admin";
+	private final String ADMIN_PW = "admin";
 	private final int LEVEL_ADMIN = 99;
 	private final int LEVEL_STUDENT = 0;
 	private String stu_id = "";
@@ -48,6 +51,7 @@ public class ActionController {
     private final int STUDENT_CLASS_LIST = 0;
     private final int STUDENT_CHAT = 1;
     private final int STUDENT_LOGOUT = 2;
+    private int mode = -1;
 	
 	private ActionController(){
 	}
@@ -91,6 +95,8 @@ public class ActionController {
 		if(result.equals("õ{Âjñß·˘ê≥äm")){
 			if(remember)
 				saveStu(stu_id, pw, autoLogin ,LEVEL_STUDENT);
+			else
+				cleanUser();
 			this.level = LEVEL_STUDENT;
 			this.login = true;
 			webSocket.connectToServer();
@@ -170,13 +176,17 @@ public class ActionController {
              }else{
                  db.update(dbHelper.getTableName(), values, "_id=1", null);
              }
+             
              cursor.close();
              db.close();
         }
+        loginFragment.setID("");
+		loginFragment.setPw("");
 	}
 	
 	public void switchFragment(Fragment fragment, int type){
 		FragmentTransaction ft = mainActivity.getFragmentManager().beginTransaction();
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		ft.replace(R.id.container, fragment).commit();
 	}
 
@@ -242,13 +252,18 @@ public class ActionController {
 	}
 
 	public void logout() {
-		cleanUser();
-		loginFragment.setRemember(remember);
-		loginFragment.setAutoLogin(autoLogin);
-		webSocket.setAdded(false);
-		if(remember){
-			loginFragment.setID("");
-			loginFragment.setPw("");
+		//cleanUser();
+		if(login){
+			loginFragment.setRemember(remember);
+			loginFragment.setAutoLogin(false);
+			this.chatContent.clear();
+			webSocket.setAdded(false);
+			if(!remember){
+				loginFragment.setID("");
+				loginFragment.setPw("");
+			}
+			login = false;
+			restoreSoundMode();
 		}
 		switchFragment(loginFragment,0);
 	}
@@ -265,12 +280,13 @@ public class ActionController {
 		    		switchFragment(getChatRoomFragment(),0);
 		    		break;
 		    	case ADMIN_START_VOTE:
-		    		startVote();
+		    		webSocket.startVote();
 		    		break;
 		    	case ADMIN_END_VOTE:
-		    		endVote();
+		    		webSocket.endVote();
 		    		break;
 		    	case ADMIN_LOGOUT:
+		    		cleanUser();
 		    		logout();
 		    		break;
 		    	case STUDENT_CLASS_LIST:
@@ -280,6 +296,7 @@ public class ActionController {
 		    		switchFragment(getChatRoomFragment(),0);
 		    		break;
 		    	case STUDENT_LOGOUT:
+		    		cleanUser();
 		    		logout();
 		    		break;
 		    	
@@ -288,6 +305,20 @@ public class ActionController {
 	
 	public void addChatContent(String message){
 		this.chatContent.add(new ChatContent(stu_id,message));
+	}
+	
+	public void changeSoundModeVibrate(){
+		
+		AudioManager audioManager = 
+			    (AudioManager)mainActivity.getSystemService(Context.AUDIO_SERVICE);
+		mode = audioManager.getRingerMode();
+		audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+	}
+	
+	public void restoreSoundMode(){
+		AudioManager audioManager = 
+			    (AudioManager)mainActivity.getSystemService(Context.AUDIO_SERVICE);
+		audioManager.setRingerMode(mode);
 	}
 	
 	public LoginFragment getLoginFragment() {

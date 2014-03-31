@@ -65,8 +65,17 @@ public class ClassListFragment extends Fragment {
 
 	private void initDrawerLayout(){
         ArrayList<DrawerItem> drawerList = new ArrayList<DrawerItem>();
-        for(int i=0;i<optionTitles.length;i++)
-        	drawerList.add(new DrawerItem(optionTitles[i],0));
+        if(optionTitles.length==3){
+        	drawerList.add(new DrawerItem(optionTitles[0],R.drawable.class_));
+        	drawerList.add(new DrawerItem(optionTitles[1],R.drawable.chat));
+        	drawerList.add(new DrawerItem(optionTitles[2],R.drawable.leave));
+        }else{
+        	drawerList.add(new DrawerItem(optionTitles[0],R.drawable.class_));
+        	drawerList.add(new DrawerItem(optionTitles[1],R.drawable.chat));
+        	drawerList.add(new DrawerItem(optionTitles[2],R.drawable.vote_start));
+        	drawerList.add(new DrawerItem(optionTitles[3],R.drawable.vote));
+        	drawerList.add(new DrawerItem(optionTitles[4],R.drawable.leave));
+        }
         drawerListView.setAdapter(new CustomDrawerAdapter(action.getMainActivity(),
                 R.layout.data_option_item, drawerList));
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());

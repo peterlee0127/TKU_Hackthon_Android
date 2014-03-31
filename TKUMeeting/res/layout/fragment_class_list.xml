@@ -7,12 +7,11 @@
 
     <!-- The main content view -->
 
-
-
 		<ScrollView
 		    android:id="@+id/class_list_sv"
 		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content" >
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/classlist" >
 
 		    <LinearLayout
 		        android:id="@+id/class_list_ll"
